@@ -19,7 +19,6 @@ public class WeatherService {
     private String urlAddress;
     private String api;
 
-
     public Weather getCityWeather(String location) throws IOException {
         String finalURL = urlAddress + "?key=" + api + "&q=";
         ObjectMapper mapper = new ObjectMapper();
