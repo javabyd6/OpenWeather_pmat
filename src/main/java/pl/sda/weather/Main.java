@@ -1,29 +1,32 @@
 package pl.sda.weather;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.sda.weather.model.Weather;
+import pl.sda.weather.service.WeatherService;
 
 import java.io.IOException;
-import java.net.URL;
+import java.util.Scanner;
 
 /**
  * @author pmatusiak
  */
 public class Main {
 
-    public static void gimmeWeather(String location) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            Weather weather = mapper.readValue(new URL("http://api.apixu.com/v1/current.json?key=99981e5867494a2cb0d122910191003&q=" + location), Weather.class);
-            System.out.println(weather.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void checkWeather() throws IOException {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Podaj miasto ");
+        String location = sc.nextLine();
+
+        WeatherService weatherService = new WeatherService("http://api.apixu.com/v1/current.json", "99981e5867494a2cb0d122910191003");
+        Weather weather = weatherService.getCityWeather(location);
+
+        System.out.println("Pogoda w mieście " + location + " to: " + weather.getCurrent().getTemp_c());
+
+        sc.close();
     }
 
-
-    public static void main(String[] args) {
-        gimmeWeather("Warsaw");
+    public static void main(String[] args) throws IOException {
+        checkWeather();
     }
 }
